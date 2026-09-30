@@ -133,7 +133,7 @@ type app struct {
 
 type appVersion struct {
 	LocalizedDescription string `json:"localizedDescription,omitempty"`
-	Size                 int64  `json:"size,omitempty"`
+	Size                 int64  `json:"size"`
 	Date                 string `json:"date,omitempty"`
 	Version              string `json:"version"`
 	DownloadURL          string `json:"downloadURL"`
