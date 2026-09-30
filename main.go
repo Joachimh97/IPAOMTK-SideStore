@@ -85,7 +85,7 @@ type yoastSchema struct {
 
 type schemaNode struct {
 	Type           any      `json:"@type"`
-	ArticleSection []string `json:"articleSection"`
+	ArticleSection any      `json:"articleSection"`
 	ThumbnailURL   string   `json:"thumbnailUrl"`
 	DatePublished  string   `json:"datePublished"`
 }
@@ -870,7 +870,18 @@ func postCategories(post wpPost) []string {
 		if !isArticle(node.Type) {
 			continue
 		}
-		for _, section := range node.ArticleSection {
+		var sections []string
+		switch v := node.ArticleSection.(type) {
+		case string:
+			sections = []string{v}
+		case []any:
+			for _, item := range v {
+				if s, ok := item.(string); ok {
+					sections = append(sections, s)
+				}
+			}
+		}
+		for _, section := range sections {
 			name := cleanText(section)
 			if name == "" || seen[strings.ToLower(name)] {
 				continue
